@@ -110,7 +110,8 @@ for ($page = $pagebegin ; $page <= $pageend ; $page++) {
     }
     $count++;
     if ($time < $fromtime) {
-      break;
+			file_put_contents($outputfilename, $outputdata);
+      return;
     }
     if ($time > $totime) {
       continue;

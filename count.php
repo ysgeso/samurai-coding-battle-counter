@@ -110,7 +110,7 @@ for ($page = $pagebegin ; $page <= $pageend ; $page++) {
     }
     $count++;
     if ($time < $fromtime) {
-      return;
+      break;
     }
     if ($time > $totime) {
       continue;

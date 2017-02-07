@@ -78,6 +78,8 @@ if ($outputfilename == "") {
   return;
 }
 
+print "start battle count\npage = " . $pagebegin . " - " . $pageend . "\ntime = " . date("Y/m/d H:i:s", $fromtime) . " - " . date("Y/m/d H:i:s", $totime) . "\n";
+
 for ($page = $pagebegin ; $page <= $pageend ; $page++) {
   print "start loading page " . $page . " ";
   $html = file_get_contents("https://arena.ai-comp.net/contests/1?battle_results_page=" . $page . "#battle_results");
@@ -171,6 +173,6 @@ for ($page = $pagebegin ; $page <= $pageend ; $page++) {
       $outputdata .= "\n";
     }
   }
-  file_put_contents($outputfilename, $outputdata);
 }
+file_put_contents($outputfilename, $outputdata);
 ?>

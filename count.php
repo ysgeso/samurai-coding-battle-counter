@@ -28,7 +28,7 @@ while ($anum < $argc || $argc == 1) {
     print "  -n オプションをつけない場合は、以下の順にtsv形式で出力する。\n    戦闘時刻、先手のユーザ名、先手のAI名、後手のユーザ名、後手のAI名、\n    勝敗（0:先手勝利、1:後手勝利、2:引き分け）、戦闘結果のURL\n\n";
     print "  注意：php-xml が必要です。インストールされていない場合は apt-get などを使ってインストールしてください。\n\n";
     print "使い方\n";
-    print "count.php [-h] [-p pstart pend] [-t fromtime totime] [-f outputfile] [-a ainame] [-r] outputfile\n";
+    print "count.php [-h] [-p pstart pend] [-t fromtime totime] [-n plname] [-b] [-r] [-noainame] outputfile\n";
     print "  -h\n    ヘルプの表示。\n";
     print "  -p pstart pend\n    Battle Result のページの、pstart から pend ページまでの結果を集計する。\n";
     print "  -t fromtime totime\n   Battle Result のページの、fromtime から totime までの結果を集計する。\n";
@@ -97,7 +97,7 @@ if ($outputfilename == "") {
 }
 
 // 開始メッセージ。バージョンと、いくつかの設定された条件なども出力する
-print "start battle count ver 1.5 last update 2017/02/09\npage = " . $pagebegin . " - " . $pageend . "\ntime = " . date("Y/m/d H:i:s", $fromtime) . " - " . date("Y/m/d H:i:s", $totime) . "\n";
+print "start battle count ver 1.6 last update 2017/02/11\npage = " . $pagebegin . " - " . $pageend . "\ntime = " . date("Y/m/d H:i:s", $fromtime) . " - " . date("Y/m/d H:i:s", $totime) . "\n";
 
 // レーティングを出力する場合、ランキングのページからランキングのデータを収集する
 if ($outputrating) {

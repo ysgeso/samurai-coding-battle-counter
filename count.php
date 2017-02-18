@@ -105,7 +105,7 @@ if ($outputfilename == "") {
 }
 
 // 開始メッセージ。バージョンと、いくつかの設定された条件なども出力する
-print "start battle count ver 1.6 last update 2017/02/11\npage = " . $pagebegin . " - " . $pageend . "\ntime = " . date("Y/m/d H:i:s", $fromtime) . " - " . date("Y/m/d H:i:s", $totime) . "\n";
+print "start battle count ver 1.7 last update 2017/02/18\npage = " . $pagebegin . " - " . $pageend . "\ntime = " . date("Y/m/d H:i:s", $fromtime) . " - " . date("Y/m/d H:i:s", $totime) . "\n";
 
 // レーティングを出力する場合、ランキングのページからランキングのデータを収集する
 if ($outputrating) {

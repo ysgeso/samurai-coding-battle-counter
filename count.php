@@ -11,6 +11,8 @@ $outputfilename = "";
 $noainame = false;
 // 特定のプレーヤーのデータのみ集計する場合の、プレーヤー名
 $playername = "";
+// コンテストページの番号
+$contestindex = "1";
 // 戦闘結果の占領数を出力するかどうか（初期設定では出力しない）
 $outputbattleresult = false;
 // 順位やレーティングを出力するかどうか（初期設定では出力しない）
@@ -28,12 +30,13 @@ while ($anum < $argc || $argc == 1) {
     print "  -n オプションをつけない場合は、以下の順にtsv形式で出力する。\n    戦闘時刻、先手のユーザ名、先手のAI名、後手のユーザ名、後手のAI名、\n    勝敗（0:先手勝利、1:後手勝利、2:引き分け）、戦闘結果のURL\n\n";
     print "  注意：php-xml が必要です。インストールされていない場合は apt-get などを使ってインストールしてください。\n\n";
     print "使い方\n";
-    print "count.php [-h] [-p pstart pend] [-t fromtime totime] [-n plname] [-b] [-r] [-noainame] outputfile\n";
+    print "count.php [-h] [-p pstart pend] [-t fromtime totime] [-n plname] [-i index] [-b] [-r] [-noainame] outputfile\n";
     print "  -h\n    ヘルプの表示。\n";
     print "  -p pstart pend\n    Battle Result のページの、pstart から pend ページまでの結果を集計する。\n";
     print "  -t fromtime totime\n   Battle Result のページの、fromtime から totime までの結果を集計する。\n";
     print "    時間は例えば y/m/d h:m:s など、phpのstrtotimeが認識できるフォーマットで記述する。\n    このオプションを一番最後に記述し、totime を省略した場合は、最新のデータまで集計する。\n";
     print "  -n plname\n    plname のプレーヤーのデータのみ集計する。\n    この場合、出力データは以下の形式になる。先手後手や勝敗はいずれもplnameから見た結果。\n";
+    print "  -i index\n    コンテストページの指定\n";
     print "      戦闘時刻、相手のユーザ名、相手のAI名、0:先手、1:後手、勝敗、戦闘結果のURL\n";
     print "  -b\n    戦闘結果の占領数を追加で出力する。(-n をつけた場合は自分、相手の順で出力する）\n";
     print "  -r\n    先手、後手の順で、AIの順位、レーティングを追加で出力する。(-n をつけた場合は相手のみ出力する）\n";
@@ -72,6 +75,11 @@ while ($anum < $argc || $argc == 1) {
     $playername = $argv[$anum];
     $anum;
   }
+  else if ($argv[$anum] == "-i") {
+    $anum++;
+    $contestindex = $argv[$anum];
+    $anum++;
+  }
   else if ($argv[$anum] == "-b") {
     $anum++;
     $outputbattleresult = true;
@@ -105,7 +113,7 @@ if ($outputrating) {
   for ($page = 1 ; $page < 1000 ; $page++) {
   print "start loading ranking page " . $page . "\n";
     // ページを読み込み、$rankinghtml に記録する
-    $rankinghtml = file_get_contents("https://arena.ai-comp.net/contests/1?ranking_page=" . $page . "#ranking");
+    $rankinghtml = file_get_contents("https://arena.ai-comp.net/contests/" . $contestindex . "?ranking_page=" . $page . "#ranking");
     // simplexml_load_string は、 <div><img ...>aaa</div> のようなデータを読み込んだ場合 aaa の部分が無視されてしまうようなので、
     // <div><img ...><span>aaa</span> のように置換する。ついでに、その前後の空白や改行を削除する
     $rankinghtml = preg_replace("/(<img[^>]*>)\s*(.*[^\s])\s*(<\/a>)/", "$1<span>$2</span>$3", $rankinghtml);
@@ -154,7 +162,7 @@ for ($page = $pagebegin ; $page <= $pageend ; $page++) {
   // 途中経過のメッセージ
   print "start loading page " . $page . " ";
   // HTMLを読み込み、$htmlに記録する
-  $html = file_get_contents("https://arena.ai-comp.net/contests/1?battle_results_page=" . $page . "#battle_results");
+  $html = file_get_contents("https://arena.ai-comp.net/contests/" . $contestindex . "?battle_results_page=" . $page . "#battle_results");
   // Win: <span> の部分が間違っているので正しい Win: </span> に置換する
   $html = str_replace("Win: <span>", "Win: </span>", $html);
   // 上記と同様の、間違った HTML の修正
